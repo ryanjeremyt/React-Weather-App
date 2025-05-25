@@ -46,6 +46,25 @@
     line-height: 1;
 }
 
+.toggle-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 40px;
+    background: #ebfffc;
+    color: #2f4680;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: #d1f0ec;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
 .city {
     color: #fff;
     font-size: 40px;

@@ -12,6 +12,7 @@ import wind_icon from '../assets/wind.png';
 const Weather = () => {
   const inputRef = useRef();
   const [weatherData, setWeatherData] = useState(null);
+  const [unit, setUnit] = useState("C"); // Celsius by default
 
   const allIcons = {
     "01d": clear_icon,
@@ -46,10 +47,12 @@ const Weather = () => {
       }
 
       const icon = allIcons[data.weather[0].icon] || clear_icon;
+      const temperatureC = data.main.temp - 273.15;
+
       setWeatherData({
         humidity: data.main.humidity,
         windSpeed: data.wind.speed,
-        temperature: Math.floor(data.main.temp - 273.15), // Convert from Kelvin to Celsius
+        temperatureC: Math.floor(temperatureC),
         location: data.name,
         icon: icon
       });
@@ -57,6 +60,18 @@ const Weather = () => {
       console.error("Error fetching data:", error);
       setWeatherData(null);
     }
+  };
+
+  const toggleUnit = () => {
+    setUnit(prevUnit => (prevUnit === "C" ? "F" : "C"));
+  };
+
+  const getDisplayTemperature = () => {
+    if (!weatherData) return '';
+    const { temperatureC } = weatherData;
+    return unit === "C"
+      ? `${temperatureC}°C`
+      : `${Math.round(temperatureC * 9 / 5 + 32)}°F`;
   };
 
   useEffect(() => {
@@ -77,7 +92,10 @@ const Weather = () => {
       {weatherData && (
         <>
           <img src={weatherData.icon} alt="weather icon" className='weather-icon' />
-          <p className='temp'>{weatherData.temperature}°C</p>
+          <p className='temp'>{getDisplayTemperature()}</p>
+          <button onClick={toggleUnit} className='toggle-btn'>
+            Show in °{unit === "C" ? "F" : "C"}
+          </button>
           <p className='city'>{weatherData.location}</p>
           <div className="weather-data">
             <div className="col">
